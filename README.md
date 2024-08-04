@@ -1,5 +1,5 @@
 # IMY220-Project
-Semester weight 30%
+Semester weight - 30%
 # Deliverable 0
 Weight - 3%<br/>
 Due - 2024/08/05 07:30<br/>
