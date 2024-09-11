@@ -1,6 +1,6 @@
-const path = require("path");
+import path from "path";
 
-module.exports = {
+export default {
     entry: "./frontend/src/index.js",
     output: {
         path: path.resolve("frontend/public"),
@@ -18,4 +18,4 @@ module.exports = {
             }
         ]
     }
-}
+};
