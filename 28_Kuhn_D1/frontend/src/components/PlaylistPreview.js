@@ -5,10 +5,10 @@ class PlaylistPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: props.title,            // Playlist title
-      songCount: props.songCount,    // Number of songs in the playlist
-      description: props.description || 'No description available', // Playlist description or a default message
-      imgSrc: props.imgSrc || 'https://via.placeholder.com/100',  // Placeholder image for the playlist
+      title: props.title,            
+      songCount: props.songCount,   
+      description: props.description || 'No description available',
+      imgSrc: props.imgSrc || 'https://via.placeholder.com/100', 
     };
   }
 
