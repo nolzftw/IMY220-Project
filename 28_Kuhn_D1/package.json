@@ -2,9 +2,8 @@
   "name": "28_kuhn_d1",
   "version": "1.0.0",
   "main": "frontend/src/index.js",
-  "type": "module",
   "scripts": {
-    "build": "babel backend/server.js -d backend/dist",
+    "build": "webpack && babel backend/server.js -d backend/dist",
     "start": "npm run build && node backend/dist/server.js"
   },
   "author": "Nolan u21437883",

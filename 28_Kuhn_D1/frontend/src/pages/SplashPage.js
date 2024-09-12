@@ -8,12 +8,12 @@ const SplashPage = () => {
 
   const handleShowLogin = () => {
     setShowLogin(true);
-    setShowSignup(false); // Hide signup if it's visible
+    setShowSignup(false); 
   };
 
   const handleShowSignup = () => {
     setShowSignup(true);
-    setShowLogin(false); // Hide login if it's visible
+    setShowLogin(false); 
   };
 
   return (
@@ -41,9 +41,9 @@ const SplashPage = () => {
                 <label>Password: </label>
                 <input type="password" placeholder="Enter your password" required />
               </div>
-              {/* <Link to="/home"> */}
+              <Link to="/home">
                 <button type="submit">Login</button>
-              {/* </Link> */}
+              </Link>
             </form>
           </div>
         )}
@@ -64,9 +64,9 @@ const SplashPage = () => {
                 <label>Confirm Password: </label>
                 <input type="password" placeholder="Confirm your password" required />
               </div>
-              {/* <Link to="/home"> */}
+              <Link to="/home">
                 <button type="submit">Sign Up</button>
-              {/* </Link> */}
+              </Link>
             </form>
           </div>
         )}
