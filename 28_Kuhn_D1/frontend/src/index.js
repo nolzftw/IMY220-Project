@@ -11,17 +11,18 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Define the routes for your pages */}
+        {/* routes */}
         <Route path="/" element={<SplashPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/playlist" element={<PlaylistPage />} />
+        {/* dynamic routes */}
+        <Route path="/playlist/:id" element={<PlaylistPage />} />
+        <Route path="/profile/:id" element={<ProfilePage />} />
       </Routes>
     </Router>
   );
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root')); 
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App />
+  <App />
 );

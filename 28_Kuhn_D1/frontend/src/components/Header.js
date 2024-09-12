@@ -2,11 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => (
+const Header = ({ id = 1 }) => (
   <nav>
     <Link to="/home">Home</Link>
-    <Link to="/playlist">Playlists</Link>
-    <Link to="/profile">Profile</Link>
+    <Link to={`/playlist/${id}`}>Playlists</Link>
+    <Link to={`/profile/${id}`}>Profile</Link>
   </nav>
 );
 

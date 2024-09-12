@@ -1,7 +1,8 @@
 // frontend/src/pages/PlaylistPage.js
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Header from '../components/Header.js';
-import Song from '../components/Song.js'; // Assuming Song component shows title, artist, album, and duration.
+import Song from '../components/Song.js';
 
 const playlistSongsArr = [
   { title: "Blinding Lights", artist: "The Weeknd", album: "After Hours", duration: "3:20" },
@@ -10,13 +11,15 @@ const playlistSongsArr = [
 ];
 
 const PlaylistPage = () => {
+  const { id } = useParams();
+
   return (
     <div className="playlist-page">
       {/* Navigation */}
       <header className="playlist-header">
-        <h1>Playlist</h1>
+        <h1>Playlist {id}</h1>  {/* Display the playlist ID */}
         <nav>
-          <Header />
+          <Header id={id} />
         </nav>
       </header>
 
@@ -24,7 +27,7 @@ const PlaylistPage = () => {
         {/* Left Section: Playlist Info */}
         <aside className="playlist-info">
           <img src="https://via.placeholder.com/150" alt="Playlist Cover" />
-          <h2>Playlist Title</h2>
+          <h2>Playlist Title (Playlist {id})</h2>  {/* Use dynamic ID for playlist title */}
           <p>Total duration: 60:00</p>
         </aside>
 
@@ -56,7 +59,7 @@ const PlaylistPage = () => {
           <h2>Artist</h2>
           <p>Age: 30</p>
           <p>Location: Los Angeles</p>
-          <p>Bio: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p>Bio: Artist {id}'s bio (dynamic)</p>
 
           <h3>Similar Artists</h3>
           <ul>
