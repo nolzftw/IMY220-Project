@@ -1,10 +1,11 @@
 // Nolan Kuhn u214337883
 const express = require('express');
 const path = require('path');
-const { MongoClient, ObjectId } = require('mongodb'); // ObjectId for MongoDB ID handling
+const { MongoClient } = require('mongodb');
 
 // MongoDB connection URL
-const url = "mongodb+srv://u21437883:Junetkuhn!1324@imy220.gpxcf.mongodb.net/";
+const url = "mongodb+srv://u21437883:Junetkuhn!1324@imy220.gpxcf.mongodb.net/?retryWrites=true&w=majority&tls=true";
+
 const client = new MongoClient(url);
 
 const app = express();
@@ -34,83 +35,38 @@ async function main() {
     const songsCollection = db.collection("songs");
 
     // ========================================
-    // User Routes
-
-    // Create User
-    app.post('/api/users', async (req, res) => {
-      const newUser = req.body;
+    // User Signup
+    app.post('/api/signup', async (req, res) => {
+      const { name, email, password  } = req.body; // Extract data from the request body
+      
       try {
-        const result = await usersCollection.insertOne(newUser);
-        res.status(201).json(result.ops[0]); // Return the created user
-      } catch (err) {
-        res.status(500).json({ error: 'Failed to create user' });
-      }
-    });
-
-    // Get User by email
-    app.get('/api/users/:email', async (req, res) => {
-      const email = req.params.email;
-      try {
-        const user = await usersCollection.findOne({ email: email });
-        if (!user) {
-          return res.status(404).json({ error: 'User not found' });
+        // Check if a user with the given email (_id) already exists
+        const existingUser = await usersCollection.findOne({ _id: email });
+      
+        if (existingUser) {
+          // If the user exists, send an error response
+          return res.status(400).json({ message: 'Email is already taken' });
         }
-        res.json(user);
+      
+        // If user doesn't exist, create a new user with email as _id
+        const newUser = {
+          _id: email,           // Set the _id to the user's email
+          name,
+          gender: '',           // Default to an empty string
+          bio: '',              // Default to an empty string
+          email,                // Set email again for clarity (optional)
+          password              // Store the password (preferably hashed)
+        };
+      
+        // Insert the new user into the users collection
+        await usersCollection.insertOne(newUser);
+      
+        // Respond with success
+        res.status(201).json({ message: 'User created successfully', user: newUser });
       } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch user' });
-      }
-    });
-
-    // Get all users
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await usersCollection.find({}).toArray(); // Retrieve all users
-    res.json(users); // Return users as a JSON response
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
-
-
-    // ========================================
-    // Playlist Routes
-
-    // Create Playlist
-    app.post('/api/playlists', async (req, res) => {
-      const newPlaylist = req.body;
-      try {
-        const result = await playlistsCollection.insertOne(newPlaylist);
-        res.status(201).json(result.ops[0]); // Return the created playlist
-      } catch (err) {
-        res.status(500).json({ error: 'Failed to create playlist' });
-      }
-    });
-
-    // Get Playlist by email
-    app.get('/api/playlists/:email', async (req, res) => {
-      const email = req.params.email;
-      try {
-        const playlist = await playlistsCollection.findOne({ email: email });
-        if (!playlist) {
-          return res.status(404).json({ error: 'Playlist not found' });
-        }
-        res.json(playlist);
-      } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch playlist' });
-      }
-    });
-
-    // ========================================
-    // Song Routes
-
-    // Add a Song
-    app.post('/api/songs', async (req, res) => {
-      const newSong = req.body;
-      try {
-        const result = await songsCollection.insertOne(newSong);
-        res.status(201).json(result.ops[0]); // Return the created song
-      } catch (err) {
-        res.status(500).json({ error: 'Failed to add song' });
+        // Handle any errors
+        console.error('Error during signup:', err);
+        res.status(500).json({ message: 'Server error, please try again later' });
       }
     });
 

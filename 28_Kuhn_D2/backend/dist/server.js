@@ -8,11 +8,10 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 var express = require('express');
 var path = require('path');
 var _require = require('mongodb'),
-  MongoClient = _require.MongoClient,
-  ObjectId = _require.ObjectId; // ObjectId for MongoDB ID handling
+  MongoClient = _require.MongoClient;
 
 // MongoDB connection URL
-var url = "mongodb+srv://u21437883:Junetkuhn!1324@imy220.gpxcf.mongodb.net/";
+var url = "mongodb+srv://u21437883:Junetkuhn!1324@imy220.gpxcf.mongodb.net/?retryWrites=true&w=majority&tls=true";
 var client = new MongoClient(url);
 var app = express();
 var port = 3000; // COMMENT OUT FOR DOCKER
@@ -33,13 +32,13 @@ function main() {
   return _main.apply(this, arguments);
 } // Call the main MongoDB function to establish the connection
 function _main() {
-  _main = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+  _main = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var db, usersCollection, playlistsCollection, songsCollection;
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context7.prev = 0;
-          _context7.next = 3;
+          _context2.prev = 0;
+          _context2.next = 3;
           return client.connect();
         case 3:
           console.info("Connected to MongoDB");
@@ -47,244 +46,84 @@ function _main() {
           usersCollection = db.collection("users");
           playlistsCollection = db.collection("playlists");
           songsCollection = db.collection("songs"); // ========================================
-          // User Routes
-          // Create User
-          app.post('/api/users', /*#__PURE__*/function () {
+          // User Signup
+          app.post('/api/signup', /*#__PURE__*/function () {
             var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-              var newUser, result;
+              var _req$body, name, email, password, existingUser, newUser;
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
-                    newUser = req.body;
+                    _req$body = req.body, name = _req$body.name, email = _req$body.email, password = _req$body.password; // Extract data from the request body
                     _context.prev = 1;
                     _context.next = 4;
-                    return usersCollection.insertOne(newUser);
-                  case 4:
-                    result = _context.sent;
-                    res.status(201).json(result.ops[0]); // Return the created user
-                    _context.next = 11;
-                    break;
-                  case 8:
-                    _context.prev = 8;
-                    _context.t0 = _context["catch"](1);
-                    res.status(500).json({
-                      error: 'Failed to create user'
+                    return usersCollection.findOne({
+                      _id: email
                     });
-                  case 11:
+                  case 4:
+                    existingUser = _context.sent;
+                    if (!existingUser) {
+                      _context.next = 7;
+                      break;
+                    }
+                    return _context.abrupt("return", res.status(400).json({
+                      message: 'Email is already taken'
+                    }));
+                  case 7:
+                    // If user doesn't exist, create a new user with email as _id
+                    newUser = {
+                      _id: email,
+                      // Set the _id to the user's email
+                      name: name,
+                      gender: '',
+                      // Default to an empty string
+                      bio: '',
+                      // Default to an empty string
+                      email: email,
+                      // Set email again for clarity (optional)
+                      password: password // Store the password (preferably hashed)
+                    }; // Insert the new user into the users collection
+                    _context.next = 10;
+                    return usersCollection.insertOne(newUser);
+                  case 10:
+                    // Respond with success
+                    res.status(201).json({
+                      message: 'User created successfully',
+                      user: newUser
+                    });
+                    _context.next = 17;
+                    break;
+                  case 13:
+                    _context.prev = 13;
+                    _context.t0 = _context["catch"](1);
+                    // Handle any errors
+                    console.error('Error during signup:', _context.t0);
+                    res.status(500).json({
+                      message: 'Server error, please try again later'
+                    });
+                  case 17:
                   case "end":
                     return _context.stop();
                 }
-              }, _callee, null, [[1, 8]]);
+              }, _callee, null, [[1, 13]]);
             }));
             return function (_x, _x2) {
               return _ref.apply(this, arguments);
             };
           }());
-
-          // Get User by email
-          app.get('/api/users/:email', /*#__PURE__*/function () {
-            var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-              var email, user;
-              return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-                while (1) switch (_context2.prev = _context2.next) {
-                  case 0:
-                    email = req.params.email;
-                    _context2.prev = 1;
-                    _context2.next = 4;
-                    return usersCollection.findOne({
-                      email: email
-                    });
-                  case 4:
-                    user = _context2.sent;
-                    if (user) {
-                      _context2.next = 7;
-                      break;
-                    }
-                    return _context2.abrupt("return", res.status(404).json({
-                      error: 'User not found'
-                    }));
-                  case 7:
-                    res.json(user);
-                    _context2.next = 13;
-                    break;
-                  case 10:
-                    _context2.prev = 10;
-                    _context2.t0 = _context2["catch"](1);
-                    res.status(500).json({
-                      error: 'Failed to fetch user'
-                    });
-                  case 13:
-                  case "end":
-                    return _context2.stop();
-                }
-              }, _callee2, null, [[1, 10]]);
-            }));
-            return function (_x3, _x4) {
-              return _ref2.apply(this, arguments);
-            };
-          }());
-
-          // Get all users
-          app.get('/api/users', /*#__PURE__*/function () {
-            var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-              var users;
-              return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-                while (1) switch (_context3.prev = _context3.next) {
-                  case 0:
-                    _context3.prev = 0;
-                    _context3.next = 3;
-                    return usersCollection.find({}).toArray();
-                  case 3:
-                    users = _context3.sent;
-                    // Retrieve all users
-                    res.json(users); // Return users as a JSON response
-                    _context3.next = 10;
-                    break;
-                  case 7:
-                    _context3.prev = 7;
-                    _context3.t0 = _context3["catch"](0);
-                    res.status(500).json({
-                      error: 'Failed to fetch users'
-                    });
-                  case 10:
-                  case "end":
-                    return _context3.stop();
-                }
-              }, _callee3, null, [[0, 7]]);
-            }));
-            return function (_x5, _x6) {
-              return _ref3.apply(this, arguments);
-            };
-          }());
-
-          // ========================================
-          // Playlist Routes
-
-          // Create Playlist
-          app.post('/api/playlists', /*#__PURE__*/function () {
-            var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-              var newPlaylist, result;
-              return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-                while (1) switch (_context4.prev = _context4.next) {
-                  case 0:
-                    newPlaylist = req.body;
-                    _context4.prev = 1;
-                    _context4.next = 4;
-                    return playlistsCollection.insertOne(newPlaylist);
-                  case 4:
-                    result = _context4.sent;
-                    res.status(201).json(result.ops[0]); // Return the created playlist
-                    _context4.next = 11;
-                    break;
-                  case 8:
-                    _context4.prev = 8;
-                    _context4.t0 = _context4["catch"](1);
-                    res.status(500).json({
-                      error: 'Failed to create playlist'
-                    });
-                  case 11:
-                  case "end":
-                    return _context4.stop();
-                }
-              }, _callee4, null, [[1, 8]]);
-            }));
-            return function (_x7, _x8) {
-              return _ref4.apply(this, arguments);
-            };
-          }());
-
-          // Get Playlist by email
-          app.get('/api/playlists/:email', /*#__PURE__*/function () {
-            var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-              var email, playlist;
-              return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-                while (1) switch (_context5.prev = _context5.next) {
-                  case 0:
-                    email = req.params.email;
-                    _context5.prev = 1;
-                    _context5.next = 4;
-                    return playlistsCollection.findOne({
-                      email: email
-                    });
-                  case 4:
-                    playlist = _context5.sent;
-                    if (playlist) {
-                      _context5.next = 7;
-                      break;
-                    }
-                    return _context5.abrupt("return", res.status(404).json({
-                      error: 'Playlist not found'
-                    }));
-                  case 7:
-                    res.json(playlist);
-                    _context5.next = 13;
-                    break;
-                  case 10:
-                    _context5.prev = 10;
-                    _context5.t0 = _context5["catch"](1);
-                    res.status(500).json({
-                      error: 'Failed to fetch playlist'
-                    });
-                  case 13:
-                  case "end":
-                    return _context5.stop();
-                }
-              }, _callee5, null, [[1, 10]]);
-            }));
-            return function (_x9, _x10) {
-              return _ref5.apply(this, arguments);
-            };
-          }());
-
-          // ========================================
-          // Song Routes
-
-          // Add a Song
-          app.post('/api/songs', /*#__PURE__*/function () {
-            var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-              var newSong, result;
-              return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-                while (1) switch (_context6.prev = _context6.next) {
-                  case 0:
-                    newSong = req.body;
-                    _context6.prev = 1;
-                    _context6.next = 4;
-                    return songsCollection.insertOne(newSong);
-                  case 4:
-                    result = _context6.sent;
-                    res.status(201).json(result.ops[0]); // Return the created song
-                    _context6.next = 11;
-                    break;
-                  case 8:
-                    _context6.prev = 8;
-                    _context6.t0 = _context6["catch"](1);
-                    res.status(500).json({
-                      error: 'Failed to add song'
-                    });
-                  case 11:
-                  case "end":
-                    return _context6.stop();
-                }
-              }, _callee6, null, [[1, 8]]);
-            }));
-            return function (_x11, _x12) {
-              return _ref6.apply(this, arguments);
-            };
-          }());
-          _context7.next = 19;
+          _context2.next = 14;
           break;
+        case 11:
+          _context2.prev = 11;
+          _context2.t0 = _context2["catch"](0);
+          console.error("Error connecting to MongoDB:", _context2.t0);
+        case 14:
+          _context2.prev = 14;
+          return _context2.finish(14);
         case 16:
-          _context7.prev = 16;
-          _context7.t0 = _context7["catch"](0);
-          console.error("Error connecting to MongoDB:", _context7.t0);
-        case 19:
-          _context7.prev = 19;
-          return _context7.finish(19);
-        case 21:
         case "end":
-          return _context7.stop();
+          return _context2.stop();
       }
-    }, _callee7, null, [[0, 16, 19, 21]]);
+    }, _callee2, null, [[0, 11, 14, 16]]);
   }));
   return _main.apply(this, arguments);
 }
