@@ -1,6 +1,6 @@
 // frontend/src/pages/ProfilePage.js
 import React from 'react';
-import { useParams } from 'react-router-dom';  // Import useParams to capture the dynamic profile ID
+import { Link, useParams } from 'react-router-dom';  // Import useParams to capture the dynamic profile ID
 import PlaylistPreview from '../components/PlaylistPreview.js';
 import Header from '../components/Header.js';
 import Song from '../components/Song.js'; // Assuming a Song component is available to display liked songs
@@ -38,7 +38,7 @@ const ProfilePage = () => {
         <h1>Profile of User {id}</h1>  {/* Display the profile ID */}
         <nav>
           <Header id={id} />
-          <button style={{ marginLeft: 'auto' }}>Logout</button>
+          <Link to="/"><button style={{ marginLeft: 'auto' }}>Logout</button></Link>
         </nav>
       </header>
 
