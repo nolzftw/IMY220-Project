@@ -1,3 +1,4 @@
+// src/components/FriendToggle.js
 import React, { useState, useEffect } from 'react';
 
 const FriendToggle = ({ userEmail, isFriend, onUpdate }) => {

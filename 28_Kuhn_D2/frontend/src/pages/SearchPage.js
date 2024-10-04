@@ -1,3 +1,4 @@
+// src/pages/SearchPage.js
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import SearchInput from '../components/SearchInput';

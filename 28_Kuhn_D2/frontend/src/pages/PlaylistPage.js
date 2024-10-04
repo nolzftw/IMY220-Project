@@ -1,3 +1,4 @@
+// src/pages/PlaylistPage.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // useNavigate for redirection
 import Header from '../components/Header.js';
@@ -197,6 +198,15 @@ const PlaylistPage = () => {
                   type="text"
                   name="description"
                   value={formData.description}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label>Hashtags:</label>
+                <input
+                  type="text"
+                  name="hashtags"
+                  value={formData.hashtags}
                   onChange={handleInputChange}
                 />
               </div>
