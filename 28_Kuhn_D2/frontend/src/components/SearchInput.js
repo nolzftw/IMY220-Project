@@ -1,39 +1,30 @@
-// frontend/src/components/SearchInput.js
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class SearchInput extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            searchTerm: '',
-        };
-    }
+const SearchInput = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchType, setSearchType] = useState('playlists'); // Default to playlists
 
-    handleChange = (event) => {
-        this.setState({ searchTerm: event.target.value });
-    };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    onSearch(searchTerm, searchType);  // Pass the search term and type to parent
+  };
 
-    handleSubmit = (event) => {
-        event.preventDefault();
-        alert(`Searching for: ${this.state.searchTerm}`);
-    };
-
-    render() {
-        const { searchTerm } = this.state;
-
-        return (
-            <form onSubmit={this.handleSubmit} className="search-input-form">
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={this.handleChange}
-                    placeholder="Search..."
-                    required
-                />
-                <button type="submit">Search</button>
-            </form>
-        );
-    }
-}
+  return (
+    <form onSubmit={handleSearch}>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <select onChange={(e) => setSearchType(e.target.value)} value={searchType}>
+        <option value="playlists">Playlists</option>
+        <option value="songs">Songs</option>
+        <option value="users">Users</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+  );
+};
 
 export default SearchInput;

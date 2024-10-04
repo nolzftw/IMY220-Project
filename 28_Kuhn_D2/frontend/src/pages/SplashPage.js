@@ -10,6 +10,7 @@ const SplashPage = () => {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
+  const [signupName, setSignupName] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,38 +19,80 @@ const SplashPage = () => {
   const handleShowLogin = () => {
     setShowLogin(true);
     setShowSignup(false);
-    setLoginError(''); 
+    setLoginError('');
   };
 
   const handleShowSignup = () => {
     setShowSignup(true);
     setShowLogin(false);
-    setSignupError(''); 
+    setSignupError('');
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (!loginEmail.includes('@')) {
       setLoginError('Please enter a valid email address.');
     } else if (loginPassword.length < 6) {
       setLoginError('Password must be at least 6 characters long.');
     } else {
-      setLoginError('');
-      navigate('/home');
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: loginEmail,
+            password: loginPassword,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setLoginError('');
+          navigate('/home'); // Redirect to the home page after successful login
+        } else {
+          setLoginError(data.message);
+        }
+      } catch (err) {
+        setLoginError('Failed to log in. Please try again.');
+      }
     }
   };
 
-  const handleSignupSubmit = (e) => {
+
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    if (!signupEmail.includes('@')) {
+    if (signupName.trim() === '') {
+      setSignupError('Please enter your name.');
+    } else if (!signupEmail.includes('@')) {
       setSignupError('Please enter a valid email address.');
     } else if (signupPassword.length < 6) {
       setSignupError('Password must be at least 6 characters long.');
     } else if (signupPassword !== confirmPassword) {
       setSignupError('Passwords do not match.');
     } else {
-      setSignupError('');
-      navigate('/home');
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: signupEmail,
+            password: signupPassword,
+            name: signupName,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setSignupError('');
+          navigate('/'); // Redirect to the home page after successful signup
+        } else {
+          setSignupError(data.message);
+        }
+      } catch (err) {
+        setSignupError('Failed to sign up. Please try again.');
+      }
     }
   };
 
@@ -88,6 +131,10 @@ const SplashPage = () => {
         <div style={{ marginTop: '20px' }}>
           <h2>Sign Up</h2>
           <form onSubmit={handleSignupSubmit}>
+            <div>
+              <label>Full Name: </label>
+              <input type="text" value={signupName} onChange={(e) => setSignupName(e.target.value)} placeholder="Enter your name" required />
+            </div>
             <div>
               <label>Email: </label>
               <input type="email" value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} placeholder="Enter your email" required />

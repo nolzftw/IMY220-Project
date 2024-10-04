@@ -1,28 +1,30 @@
 // frontend/src/components/PlaylistPreview.js
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class PlaylistPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: props.title,
-      runTime: props.runTime,
       description: props.description || 'No description available',
       imgSrc: props.imgSrc || 'https://via.placeholder.com/100',
     };
   }
 
   render() {
-    const { title, runTime, description, imgSrc } = this.state;
+    const { title, description, imgSrc } = this.state;
+    const { link } = this.props; // Get the link prop
 
     return (
       <div className="playlist-preview">
         {/* Display the playlist image */}
-        <img src={imgSrc} alt={`${title} playlist cover`} style={{ width: '100px', height: '100px' }} />
+        <Link to={link}>
+          <img src={imgSrc} alt={`${title} playlist cover`} style={{ width: '100px', height: '100px' }} />
+        </Link>
 
         {/* Display playlist details */}
         <h3>{title}</h3>
-        <p>{runTime} {runTime === 1 ? 'Song' : 'Songs'}</p>
         <p>{description}</p>
       </div>
     );
@@ -30,5 +32,3 @@ class PlaylistPreview extends Component {
 }
 
 export default PlaylistPreview;
-
-

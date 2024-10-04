@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage.js';
 import PlaylistPage from './pages/PlaylistPage.js';
 import ProfilePage from './pages/ProfilePage.js';
 import SplashPage from './pages/SplashPage.js';
+import SearchPage from './pages/SearchPage.js';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         {/* dynamic routes */}
         <Route path="/playlist/:id" element={<PlaylistPage />} />
         <Route path="/profile/:id" element={<ProfilePage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </Router>
   );
