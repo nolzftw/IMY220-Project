@@ -98,7 +98,7 @@ const SplashPage = () => {
 
   return (
     <div className="grid grid-cols-3 grid-rows-4 h-screen w-screen bg-slate-600">
-      <div className="col-start-2 row-start-1 row-span-1 flex flex-col items-center justify-center bg-slate-500">
+      <div className="col-start-2 row-start-1 row-span-1 flex flex-col items-center justify-center bg-slate-500 mt-20 h-fit">
         <h1 className="mb-2">Welcome to Apogee</h1>
         <p>Discover new music and playlists!</p>
       </div>

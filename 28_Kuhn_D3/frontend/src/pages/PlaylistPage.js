@@ -1,6 +1,6 @@
 // src/pages/PlaylistPage.js
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // useNavigate for redirection
+import { Link, useParams, useNavigate } from 'react-router-dom'; // useNavigate for redirection
 import Header from '../components/Header.js';
 import AddToPlaylist from '../components/AddToPlaylist.js';
 
@@ -113,7 +113,8 @@ const PlaylistPage = () => {
     <div className="playlist-page">
       {/* Navigation */}
       <header className="playlist-header">
-        <h1>{playlist.title}</h1>  {/* Display the playlist title */}
+        <Link to="/home"><h1>Apogee</h1></Link>
+        <h2>Playlist</h2>  {/* Display the playlist title */}
         <nav>
           <Header id={id} />
         </nav>

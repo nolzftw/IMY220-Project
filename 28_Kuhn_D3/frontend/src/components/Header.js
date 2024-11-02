@@ -15,10 +15,14 @@ class Header extends React.Component {
 
   render() {
     return (
-      <nav>
-        <Link to="/home">Home</Link>
-        <Link to={`/profile/${this.props.id}`}>Profile</Link>
-        <SearchInput onSearch={this.handleSearch} /> {/* Add SearchInput */}
+      <nav className="grid grid-cols-3 grid-rows-2 bg-slate-500">
+        <div className="col-start-2 row-start-1 flex justify-center gap-4">
+          <Link to="/home" className="hover:text-yellow-400 hover:underline">Home</Link>
+          <Link to={`/profile/${this.props.id}`} className="hover:text-yellow-400 hover:underline">Profile</Link>
+        </div>
+        <div className="col-start-3 row-start-1">
+          <SearchInput onSearch={this.handleSearch}  />
+        </div>
       </nav>
     );
   }

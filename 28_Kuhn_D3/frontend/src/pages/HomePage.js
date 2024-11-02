@@ -1,5 +1,6 @@
 // frontend/src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Song from '../components/Song.js';
 import Header from '../components/Header.js';
 import PlaylistPreview from '../components/PlaylistPreview.js';
@@ -69,41 +70,52 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Home</h1>
-      <nav>
+    <div className="grid grid-cols-1 auto-rows-max bg-slate-700">
+      <div className="row-start-1 flex flex-col items-center justify-center h-10 bg-slate-600">
+        <Link to="/home"><h1>Apogee</h1></Link>
+        <h2>Home</h2>
+      </div>
+      <nav className="row-start-2">
         <Header />
       </nav>
 
-      <h2>Songs</h2>
-      {error && <p>{error}</p>}
-      {songs.length > 0 ? (
-        songs.map((song, index) => (
-          <Song key={index} title={song.title} artist={song.artist} album={song.album} link={song.link} />
-        ))
-      ) : (
-        <p>No songs found.</p>
-      )}
+      <div className="row-start-3 bg-slate-500">
+        <h2 >Songs</h2>
+        {error && <p>{error}</p>}
+        {songs.length > 0 ? (
+          songs.map((song, index) => (
+            <Song key={index} title={song.title} artist={song.artist} album={song.album} link={song.link} />
+          ))
+        ) : (
+          <p>No songs found.</p>
+        )}
+      </div>
 
-      {/* AddSong component with the onSongAdded callback to refresh the song list */}
-      <AddSong onSongAdded={handleSongAdded} />
+      <div className="bg-slate-400">
+        {/* AddSong component with the onSongAdded callback to refresh the song list */}
+        <AddSong onSongAdded={handleSongAdded} />
+      </div>
 
-      <h2>Playlists</h2>
-      {playlists.length > 0 ? (
-        playlists.map((playlist, index) => (
-          <PlaylistPreview
-            key={index}
-            title={playlist.title}
-            description={playlist.description}
-            link={`/playlist/${playlist._id}`}
-          />
-        ))
-      ) : (
-        <p>No playlists found.</p>
-      )}
+      <div className="bg-slate-300">
+        <h2>Playlists</h2>
+        {playlists.length > 0 ? (
+          playlists.map((playlist, index) => (
+            <PlaylistPreview
+              key={index}
+              title={playlist.title}
+              description={playlist.description}
+              link={`/playlist/${playlist._id}`}
+            />
+          ))
+        ) : (
+          <p>No playlists found.</p>
+        )}
+      </div>
 
-      {/* CreatePlaylist component with the onPlaylistCreated callback to refresh the playlist list */}
-      <CreatePlaylist onPlaylistCreated={handlePlaylistCreated} />
+      <div className="bg-slate-200">
+        {/* CreatePlaylist component with the onPlaylistCreated callback to refresh the playlist list */}
+        <CreatePlaylist onPlaylistCreated={handlePlaylistCreated} />
+      </div>
     </div>
   );
 };
