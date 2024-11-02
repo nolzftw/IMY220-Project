@@ -97,58 +97,56 @@ const SplashPage = () => {
   };
 
   return (
-    <div>
-      <h1 className="border-black">Welcome to Apogee</h1>
-      <p>Discover new music and playlists!</p>
+    <div className="grid grid-cols-3 grid-rows-4 h-screen w-screen bg-slate-600">
+      <div className="col-start-2 row-start-1 row-span-1 flex flex-col items-center justify-center bg-slate-500">
+        <h1 className="mb-2">Welcome to Apogee</h1>
+        <p>Discover new music and playlists!</p>
+      </div>
 
       {/* Buttons to show login/signup forms */}
-      <div>
-        <button onClick={handleShowLogin}>Login</button>
-        <button onClick={handleShowSignup} style={{ marginLeft: '10px' }}>Sign Up</button>
+      <div className="col-start-2 row-start-2 grid grid-cols-2 gap-4 justify-center">
+        <button onClick={handleShowLogin} className="bg-blue-500 text-white py-2 px-4 rounded h-10">Login</button>
+        <button onClick={handleShowSignup} className="bg-green-500 text-white py-2 px-4 rounded h-10">Sign Up</button>
       </div>
 
       {/* Conditionally display login form */}
       {showLogin && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>Login</h2>
+        <div className="col-start-2 row-start-2 bg-slate-300 p-4 rounded max-w-md mx-auto mt-20 h-fit">
+          <h2 className="text-center">Login</h2>
           <form onSubmit={handleLoginSubmit}>
-            <div>
+            <div className="mb-4">
               <label>Email: </label>
-              <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="Enter your email" required />
+              <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="Enter your email" required className="w-full p-2 border rounded" />
             </div>
-            <div>
+            <div className="mb-4">
               <label>Password: </label>
-              <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} placeholder="Enter your password" required />
+              <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} placeholder="Enter your password" required className="w-full p-2 border rounded" />
             </div>
-            {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
-            <button type="submit">Login</button>
+            {loginError && <p className="text-red-500">{loginError}</p>}
+            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded w-full">Login</button>
           </form>
         </div>
       )}
 
       {/* Conditionally display signup form */}
       {showSignup && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>Sign Up</h2>
+        <div className="col-start-2 row-start-2 bg-slate-300 p-4 rounded max-w-md mx-auto mt-20 h-fit">
+          <h2 className="text-center">Sign Up</h2>
           <form onSubmit={handleSignupSubmit}>
-            <div>
+            <div className="mb-4">
               <label>Full Name: </label>
-              <input type="text" value={signupName} onChange={(e) => setSignupName(e.target.value)} placeholder="Enter your name" required />
+              <input type="text" value={signupName} onChange={(e) => setSignupName(e.target.value)} placeholder="Enter your name" required className="w-full p-2 border rounded" />
             </div>
-            <div>
+            <div className="mb-4">
               <label>Email: </label>
-              <input type="email" value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} placeholder="Enter your email" required />
+              <input type="email" value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} placeholder="Enter your email" required className="w-full p-2 border rounded" />
             </div>
-            <div>
+            <div className="mb-4">
               <label>Password: </label>
-              <input type="password" value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} placeholder="Enter your password" required />
+              <input type="password" value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} placeholder="Enter your password" required className="w-full p-2 border rounded" />
             </div>
-            <div>
-              <label>Confirm Password: </label>
-              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm your password" required />
-            </div>
-            {signupError && <p style={{ color: 'red' }}>{signupError}</p>}
-            <button type="submit">Sign Up</button>
+            {signupError && <p className="text-red-500">{signupError}</p>}
+            <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded w-full">Sign Up</button>
           </form>
         </div>
       )}
